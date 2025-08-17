@@ -1,0 +1,18 @@
+Source: lxqt-wayland-session
+Section: x11
+Priority: optional
+Maintainer: Patrick Schleizer <adrelanos@kicksecure.com>
+Build-Depends: debhelper-compat (= 13), libkf6windowsystem-dev,
+ liblxqt-dev (>= 2.1.0), libxkbcommon-dev, lxqt-build-tools (>= 2.1.0),
+ pkgconf, qt6-tools-dev, xdg-user-dirs
+Standards-Version: 4.7.2
+Homepage: https://github.com/lxqt/lxqt-wayland-session
+Rules-Requires-Root: no
+
+Package: lxqt-wayland-session
+Architecture: all
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Files needed for the LXQt Wayland Session
+ Files needed for the LXQt Wayland Session: Wayland session start script,
+ its desktop entry for display managers and default configurations for
+ actually supported compositors.
