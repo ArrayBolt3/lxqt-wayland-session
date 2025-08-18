@@ -6,13 +6,13 @@ display managers and default configurations for actually supported compositors w
     * Labwc (version 0.7.2 and higher)
     * Wayfire
     * kwin_wayland
-  
+
 * Tiling Wms
     * Hyprland
     * Niri
     * river
     * Sway
-  
+
 At startup a basic configuration file for those compositors will be copied to `$XDG_CONFIG_HOME/lxqt/wayland` directory
 if not existing already, except for labwc and `kwin_wayland` where their default configuration location is used.
 If no compositor is already set in `lxqt-config-session` Labwc will be started opening "Session Settings".
@@ -31,7 +31,7 @@ Runtime dependencies are [qtxdg-tools](https://github.com/lxqt/qtxdg-tools),
 Additional build dependencies are [lxqt-build-tools](https://github.com/lxqt/lxqt-build-tools), CMake and optionally Git to pull latest VCS checkouts.
 
 Code configuration is handled by CMake. CMake variable `CMAKE_INSTALL_PREFIX` has to be set
-to `/usr` on most operating systems.  
+to `/usr` on most operating systems.
 
 To build run `make`, to install `make install` which accepts variable `DESTDIR` as usual.
 
