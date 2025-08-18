@@ -16,19 +16,19 @@ if [ -z "$XDG_CONFIG_HOME" ]; then
 fi
 
 if [ -z "$XDG_DATA_DIRS" ]; then
-    XDG_DATA_DIRS="$XDG_DATA_HOME:/usr/local/share:/usr/share"
+    XDG_DATA_DIRS="@PREDEF_XDG_DATA_DIRS@"
 else
-    if ! contains "$XDG_DATA_DIRS" "/usr/share"; then
-        XDG_DATA_DIRS="$XDG_DATA_DIRS:/usr/share"
+    if ! contains "$XDG_DATA_DIRS" "@LXQT_DATA_DIR@"; then
+        XDG_DATA_DIRS="$XDG_DATA_DIRS:@LXQT_DATA_DIR@"
     fi
 fi
 export XDG_DATA_DIRS
 
 if [ -z "$XDG_CONFIG_DIRS" ]; then
-    export XDG_CONFIG_DIRS="/etc:/etc/xdg:/usr/share"
+    export XDG_CONFIG_DIRS="@PREDEF_XDG_CONFIG_DIRS@"
 else
-    if ! contains "$XDG_CONFIG_DIRS" '/etc/xdg'; then
-        XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS:/etc/xdg"
+    if ! contains "$XDG_CONFIG_DIRS" '@LXQT_ETC_XDG_DIR@'; then
+        XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS:@LXQT_ETC_XDG_DIR@"
     fi
 fi
 
@@ -47,7 +47,7 @@ mkdir -p "$XDG_DESKTOP_DIR"
 # Launch DBus if needed
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
     if [ -z "$XDG_RUNTIME_DIR" ] || ! [ -S "$XDG_RUNTIME_DIR/bus" ] || ! [ -O "$XDG_RUNTIME_DIR/bus" ]; then
-        eval "$(dbus-launch --sh-syntax --exit-with-session)" || echo "startlxqt: error executing dbus-launch" >&2
+        eval "$(dbus-launch --sh-syntax --exit-with-session)" || echo "startlxqtwayland: error executing dbus-launch" >&2
     fi
 fi
 
@@ -65,19 +65,20 @@ export QT_ACCESSIBILITY=1
 # use lxqt-applications.menu for main app menu
 export XDG_MENU_PREFIX="lxqt-"
 
+share_dir="$(dirname $(dirname "$0"))"/share
+
 if [ ! -d "$XDG_CONFIG_HOME/lxqt/wayland" ]; then
     mkdir -p $XDG_CONFIG_HOME/lxqt/wayland/
 fi
-
-if grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
-    COMPOSITOR=`cat "$XDG_CONFIG_HOME"/lxqt/session.conf|grep compositor |awk -F'=' '{sub(".*/", "", $2); print $2}'`
-fi
+# Check for compositor in user config file and fallback dirs
+for d in $(echo "$XDG_CONFIG_HOME:$XDG_CONFIG_DIRS" | tr : '\n'); do
+    config_file="$d/lxqt/session.conf"
+    [ -f "$config_file" ] && [ -r "$config_file" ] || continue
+    COMPOSITOR="$(sed -nre '/^compositor\s*=/ { s@^[^=]+=\s*(/|\S+.*/)?([^/]+)?$@\2@; p; }' "$config_file")"
+    [ -z "$COMPOSITOR" ] || break
+done
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
-
-export MOZ_ENABLE_WAYLAND=1
-
-share_dir="$(dirname $(dirname "$0"))"/share
 
 valid_layouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')
 trylayout=$(echo $LANG | cut -c 1,2)
@@ -96,12 +97,13 @@ if  [ -z "$COMPOSITOR" ]; then
 
 elif [ "$COMPOSITOR" = "labwc" ]; then
     # Copy default configuration if not existing and set keyboard layout if different from us
-    if [ ! -d "$XDG_CONFIG_HOME/labwc" ]; then
-       cp -av "$share_dir"/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/  # use default location here
-       if echo "$valid_layouts" | grep -q "$trylayout"; then
-          echo "XKB_DEFAULT_LAYOUT=$trylayout" >> $XDG_CONFIG_HOME/labwc/environment
-       fi
-    fi
+    # Patched out by Kicksecure because it forces us to use the Vent theme and prevents future configuration updates.
+    #if [ ! -d "$XDG_CONFIG_HOME/labwc" ]; then
+    #   cp -av "$share_dir"/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/  # use default location here
+    #   if echo "$valid_layouts" | grep -q "$trylayout"; then
+    #      echo "XKB_DEFAULT_LAYOUT=$trylayout" >> $XDG_CONFIG_HOME/labwc/environment
+    #   fi
+    #fi
 
     # enable cursor on VM (systemd only)
     if type systemd-detect-virt > /dev/null 2>&1 && systemd-detect-virt --quiet; then
@@ -109,7 +111,10 @@ elif [ "$COMPOSITOR" = "labwc" ]; then
         echo "Running on virtualized hardware"
     fi
 
-    exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
+    # Patched by Kicksecure to allow labwc to use system-wide configuration.
+    # See: https://github.com/lxqt/lxqt-wayland-session/issues/83
+    #exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
+    exec $COMPOSITOR -S lxqt-session
 
 elif [ "$COMPOSITOR" = "niri" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl" ]; then
@@ -170,6 +175,9 @@ elif [ "$COMPOSITOR" = "Hyprland" ]; then
             sed -i "s/kb_layout = us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf"
         fi
     fi
+    # workaround for cursor
+    export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_size| tr 'a-z' 'A-Z')
+    export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_theme| tr 'a-z' 'A-Z')
     exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
 
 elif [ "$COMPOSITOR" = "river" ]; then

@@ -16,6 +16,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Minimum Versions
+# WARNING: Patched by Kicksecure to allow compatibility with an older version of LXQt.
 set(LXQT_MINIMUM_VERSION "2.1.0")
 
 find_package(lxqt ${LXQT_MINIMUM_VERSION} REQUIRED)
@@ -25,8 +26,8 @@ find_package(PkgConfig REQUIRED)
 find_package(XdgUserDirs REQUIRED)
 
 set(LXQT_WAYLAND_SESSION_MAJOR_VERSION 0)
-set(LXQT_WAYLAND_SESSION_MINOR_VERSION 1)
-set(LXQT_WAYLAND_SESSION_PATCH_VERSION 1)
+set(LXQT_WAYLAND_SESSION_MINOR_VERSION 2)
+set(LXQT_WAYLAND_SESSION_PATCH_VERSION 0)
 set(LXQT_WAYLAND_SESSION_VERSION ${LXQT_WAYLAND_SESSION_MAJOR_VERSION}.${LXQT_WAYLAND_SESSION_MINOR_VERSION}.${LXQT_WAYLAND_SESSION_PATCH_VERSION})
 
 include(LXQtPreventInSourceBuilds)
@@ -51,12 +52,8 @@ install(PROGRAMS
     DESTINATION "${CMAKE_INSTALL_BINDIR}"
     COMPONENT Runtime
 )
-#install(FILES /// evt. TODO manpage
-#    startlxqt.1
-#    DESTINATION "${CMAKE_INSTALL_MANDIR}/man1"
-#    COMPONENT Runtime
-#)
 
+add_subdirectory(man)
 add_subdirectory(configurations)
 add_subdirectory(wallpaper)
 add_subdirectory(labwc-themes)
