@@ -1,2 +1,3 @@
 lxqt-wayland-session: spare-manual-page [usr/share/man/man1/lxqt-wayland-session.1.gz]
 lxqt-wayland-session: package-contains-documentation-outside-usr-share-doc [usr/share/lxqt/wayland/labwc/README]
+lxqt-wayland-session: script-not-executable [usr/share/lxqt/wayland/lxqt-river-init]
