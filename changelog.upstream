@@ -1,0 +1,29 @@
+commit 4451176bc3962ce1f959083ccd7eb4fe0df4b9e6
+Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
+Date:   Tue Sep 2 18:19:14 2025 -0500
+
+    Add TODO, enable dh_clean to clean up build artifacts
+
+commit 01d860318f4b1a4f5be8b97660d84bd21c04aa2a
+Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
+Date:   Tue Sep 2 18:05:53 2025 -0500
+
+    Silence lxqt-river-init Lintian warning, fix copyright file
+
+commit 085c9c39a0753b0137a8387ed1666ba8211ae1fe
+Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
+Date:   Sun Aug 17 19:50:36 2025 -0500
+
+    Update to lxqt-wayland-session 0.2.0, patch for Kicksecure
+
+commit 219ddf5ec58e5ce5a6acb542ca5617d7a003e160
+Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
+Date:   Sun Aug 17 19:19:59 2025 -0500
+
+    Get rid of Unicode
+
+commit 06b7e28e212bd1d490e7648bbaf112f4c90212d8
+Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
+Date:   Sun Aug 17 16:23:59 2025 -0500
+
+    Initial commit
