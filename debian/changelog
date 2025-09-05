@@ -6,6 +6,6 @@ lxqt-wayland-session (0.2.1-1) unstable; urgency=medium
 
 lxqt-wayland-session (0.2.0-1) unstable; urgency=medium
 
-  * Initial release. (TODO: Update the author line of this stanza.)
+  * Initial release.
 
- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Sun, 17 Aug 2025 16:01:35 -0500
+ -- Patrick Schleizer <adrelanos@whonix.org>  Sun, 17 Aug 2025 16:01:35 -0500
