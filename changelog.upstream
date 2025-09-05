@@ -1,3 +1,32 @@
+commit d84b48c67b51da0da6a770242a8592cde3d25557
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Fri Sep 5 04:02:38 2025 -0400
+
+    add debian install file (generated using "genmkfile debinstfile")
+
+commit 66d9927d90d0a7854626b46c13f0d118becdb4f6
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Fri Sep 5 03:58:21 2025 -0400
+
+    lintian
+
+commit 7c7e12fdf19a4f56786ed84f2801cf522b7d82ab
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Thu Sep 4 11:44:28 2025 -0400
+
+    signed commit
+
+commit a7233a6b16ab522b0b494791263c4b5433d21184
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Thu Sep 4 11:43:52 2025 -0400
+
+    bumped changelog version
+
+commit 86e77f812e20d0aa582e77feae4f0ff78ee398ae
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Thu Sep 4 11:43:11 2025 -0400
+
+    signed commit
 
 commit 4451176bc3962ce1f959083ccd7eb4fe0df4b9e6
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
